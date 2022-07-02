@@ -9,8 +9,6 @@ ARG BUILD_DATE
 ARG BUILD_VCS_REF
 
 ARG SERVIIO_VERSION=2.2.1
-ARG FFMPEG_VERSION=5.0.1
-ARG JASPER_VERSION=3.0.5
 ARG JRE_PACKAGE=openjdk17-jre
 
 LABEL \
@@ -38,7 +36,10 @@ RUN set -ex \
 		bzip2 \
 		expat \
 		fdk-aac \
+		ffmpeg \
+		jasper \
 		lame \
+		lcms2 \
 		libbz2 \
 		libdrm \
 		libffi \
@@ -75,11 +76,13 @@ RUN set -ex \
 		coreutils \
 		curl \
 		fdk-aac-dev \
+		ffmpeg-dev \
 		freetype-dev \
 		g++ \
 		gcc \
 		git \
 		imlib2-dev \
+		jasper-dev \
 		lcms2-dev \
 		libgcc \
 		libjpeg-turbo-dev \
@@ -120,58 +123,8 @@ RUN set -ex \
 		zlib-dev \
 ### Create WORKDIR and get all ingredients		
 	&& DIR=$(mktemp -d) && cd ${DIR} \
-	&& wget https://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz && tar xvf ffmpeg-${FFMPEG_VERSION}.tar.gz \
-	&& wget https://github.com/jasper-software/jasper/releases/download/version-${JASPER_VERSION}/jasper-${JASPER_VERSION}.tar.gz && tar xvf jasper-${JASPER_VERSION}.tar.gz \
 	&& wget https://raw.githubusercontent.com/soerentsch/dcraw/master/dcraw.c \
 	&& wget https://download.serviio.org/releases/serviio-${SERVIIO_VERSION}-linux.tar.gz && tar xvf serviio-${SERVIIO_VERSION}-linux.tar.gz \
-### Build ffmpeg	
-	&& cd ${DIR} \
-	&& cd ffmpeg-${FFMPEG_VERSION} \
-	&& ./configure \
-		--disable-doc \
-		--disable-debug \
-		--disable-shared \
-		--enable-avfilter \
-		--enable-gnutls \
-		--enable-gpl \
-		--enable-libass \
-		--enable-libfdk-aac \
-		--enable-libfreetype \
-		--enable-libmp3lame \
-		--enable-libopus \
-		--enable-librtmp \
-		--enable-libtheora \
-		--enable-libv4l2 \
-		--enable-libvorbis \
-		--enable-libvpx \
-		--enable-libwebp \
-		--enable-libx264 \
-		--enable-libx265 \
-		--enable-libxcb \
-		--enable-libxvid \
-		--enable-nonfree \
-		--enable-pic \
-		--enable-pthreads \
-		--enable-postproc \
-		--enable-static \
-		--enable-small \
-		--enable-version3 \
-		--enable-vaapi \
-		--extra-libs="-lpthread -lm" \
-		--prefix=/usr \
-	&& make -j$(nproc) \
-	&& make install \
-	&& gcc -o tools/qt-faststart $CFLAGS tools/qt-faststart.c \
-	&& install -D -m755 tools/qt-faststart /usr/bin/qt-faststart \
-	&& make distclean \
-### Build Jasper	
-	&& cd ${DIR} \
-	&& cd jasper-${JASPER_VERSION} \
-	&& mkdir ./obj \
-	&& cd ./obj \
-	&& cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=/usr/lib \
-	&& make -j$(nproc) \
-	&& make install \
 ### Build dcraw	
 	&& cd ${DIR} \
 	&& gcc -o dcraw -O4 dcraw.c -lm -ljasper -ljpeg -llcms2 \
