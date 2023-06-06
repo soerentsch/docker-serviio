@@ -61,8 +61,9 @@ ENV PATH="$JAVA_HOME/bin:${PATH}"
 
 # Build OpenJDK
 WORKDIR /app/riscv-port
-RUN bash configure --with-target-bits=64 && \
-    make images
+RUN set -ex \
+	&& bash configure --with-target-bits=64 \
+    	&& make images
 
 ### Create new WORKDIR and get all ingredients		
 RUN set -ex \
