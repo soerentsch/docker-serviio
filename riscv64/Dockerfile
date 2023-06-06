@@ -52,9 +52,6 @@ RUN set -ex \
 		jasper-dev \
 		lcms2-dev
 
-# Clone OpenJDK RISC-V repository
-RUN git clone --depth 1 --single-branch --branch master https://github.com/openjdk/riscv-port.git
-
 # Set environment variables for OpenJDK build
 ENV JAVA_HOME=/opt/openjdk
 ENV PATH="$JAVA_HOME/bin:${PATH}"
@@ -62,6 +59,7 @@ ENV PATH="$JAVA_HOME/bin:${PATH}"
 # Build OpenJDK
 WORKDIR /app/riscv-port
 RUN set -ex \
+	&& git clone --depth 1 --single-branch --branch master https://github.com/openjdk/riscv-port.git \
 	&& bash configure --with-target-bits=64 \
     	&& make images
 
