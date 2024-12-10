@@ -49,7 +49,7 @@ RUN set -ex \
 	&& apk add --no-cache --update --virtual=.build-dependencies \
 		g++ \ 
 		jasper-dev \
-		lcms2-dev \ 
+ 		lcms2-dev \ 
 ### Create WORKDIR and get all ingredients		
 	&& DIR=$(mktemp -d) && cd ${DIR} \
 	&& wget https://raw.githubusercontent.com/soerentsch/dcraw/master/dcraw.c \
@@ -87,6 +87,6 @@ EXPOSE 23523/tcp
 # HTTPS/1.1 /cds /mediabrowser
 EXPOSE 23524/tcp
 
-HEALTHCHECK NONE
+HEALTHCHECK --start-period=5m CMD wget --quiet --tries=1 -O /dev/null --server-response --timeout=5 http://localhost:23423/rest/ping || exit 1
 
 CMD tail -f /opt/serviio/log/serviio.log & /opt/serviio/bin/serviio.sh
