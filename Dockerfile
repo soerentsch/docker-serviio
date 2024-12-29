@@ -35,6 +35,7 @@ LABEL \
 	org.opencontainers.image.authors="[soerentsch] Soeren <soerentsch@gmail.com>"
 
 ENV JAVA_HOME="/usr"
+ENV JAVA_OPTS="-XX:+UsePerfData"
 
 # Prepare APK CDNs
 RUN set -ex \
@@ -87,6 +88,6 @@ EXPOSE 23523/tcp
 # HTTPS/1.1 /cds /mediabrowser
 EXPOSE 23524/tcp
 
-HEALTHCHECK NONE
+HEALTHCHECK --start-period=5m CMD wget --quiet --tries=1 -O /dev/null --server-response --timeout=5 http://localhost:23423/rest/ping || exit 1
 
 CMD tail -f /opt/serviio/log/serviio.log & /opt/serviio/bin/serviio.sh
