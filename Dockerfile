@@ -88,6 +88,6 @@ EXPOSE 23523/tcp
 # HTTPS/1.1 /cds /mediabrowser
 EXPOSE 23524/tcp
 
-HEALTHCHECK --start-period=5m CMD wget --quiet --tries=1 -O /dev/null --server-response --timeout=5 http://localhost:23423/rest/ping || exit 1
+HEALTHCHECK --start-period=5m CMD wget --quiet --tries=1 -O /dev/null --server-response --timeout=5 http://127.0.0.1:23423/rest/ping || exit 1
 
 CMD tail -f /opt/serviio/log/serviio.log & /opt/serviio/bin/serviio.sh
