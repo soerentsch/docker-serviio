@@ -50,7 +50,7 @@ RUN set -ex \
 	&& apk add --no-cache --update --virtual=.build-dependencies \
 		g++ \ 
 		jasper-dev \
-		lcms2-dev \ 
+ 		lcms2-dev \ 
 ### Create WORKDIR and get all ingredients		
 	&& DIR=$(mktemp -d) && cd ${DIR} \
 	&& wget https://raw.githubusercontent.com/soerentsch/dcraw/master/dcraw.c \
