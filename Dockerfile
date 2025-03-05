@@ -1,7 +1,7 @@
 # Serviio docker
 #
 # Run with: docker run --rm --name serviio -d -p 23423:23423/tcp -p 23424:23424/tcp -p 8895:8895/tcp -p 1900:1900/udp -v /etc/localtime:/etc/localtime:ro soerentsch/serviio
-ARG ALPINE_VERSION=3.21.2
+ARG ALPINE_VERSION=3.21.3
 
 FROM alpine:${ALPINE_VERSION}
 
@@ -50,7 +50,7 @@ RUN set -ex \
 	&& apk add --no-cache --update --virtual=.build-dependencies \
 		g++ \ 
 		jasper-dev \
- 		lcms2-dev \ 
+		lcms2-dev \ 
 ### Create WORKDIR and get all ingredients		
 	&& DIR=$(mktemp -d) && cd ${DIR} \
 	&& wget https://raw.githubusercontent.com/soerentsch/dcraw/master/dcraw.c \

@@ -30,7 +30,7 @@ Serviio serve DLNA over the default port `1900` with `UDP`, the media itself wil
 ## Container Settings
 ### Build Args
 
- - `ALPINE_VERSION` = 3.21.2
+ - `ALPINE_VERSION` = 3.21.3
  - `SERVIIO_VERSION` = 2.4
  - `JRE_PACKAGE` = openjdk8-jre (32bit) / openjdk22-jre (64bit)
 
@@ -55,11 +55,12 @@ Serviio serve DLNA over the default port `1900` with `UDP`, the media itself wil
 ## Platform differences
 ### JVM
  - 32bit Platforms (x86, 386, arm7) will use OpenJDK 8 (the latest OpenJDK with 32bit support).
- - 64bit Platforms (x86_64, amd64, aarch64, arm64, s390x) will use OpenJDK 22.
+ - 64bit Platforms (x86_64, amd64, aarch64, arm64, s390x, riscv64) will use OpenJDK 22.
 
 ## Container Changelog (dd.mm.yy)
  | Date | Changes |
  | ---- | ------- |
+ | **05.03.2025** | Update alpine to 3.21.3. Added riscv64 support.
  | **31.01.2025** | Many minor alpine updates.
  | **29.12.2024** | Fix new Healthcheck.
  | **28.12.2024** | Added JAVA_OPTS environment variable. Added new Healthcheck. Many minor alpine updates.
