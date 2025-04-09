@@ -55,11 +55,12 @@ Serviio serve DLNA over the default port `1900` with `UDP`, the media itself wil
 ## Platform differences
 ### JVM
  - 32bit Platforms (x86, 386, arm7) will use OpenJDK 8 (the latest OpenJDK with 32bit support).
- - 64bit Platforms (x86_64, amd64, aarch64, arm64, s390x, riscv64) will use OpenJDK 22.
+ - 64bit Platforms (x86_64, amd64, aarch64, arm64, s390x, riscv64, loongarch64) will use OpenJDK 22.
 
 ## Container Changelog (dd.mm.yy)
  | Date | Changes |
  | ---- | ------- |
+ | **09.04.2025** | Many minor alpine updates.
  | **05.03.2025** | Update alpine to 3.21.3. Added riscv64 support.
  | **31.01.2025** | Many minor alpine updates.
  | **29.12.2024** | Fix new Healthcheck.
