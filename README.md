@@ -60,6 +60,7 @@ Serviio serve DLNA over the default port `1900` with `UDP`, the media itself wil
 ## Container Changelog (dd.mm.yy)
  | Date | Changes |
  | ---- | ------- |
+ | **12.05.2025** | Many minor alpine updates.
  | **09.04.2025** | Many minor alpine updates.
  | **05.03.2025** | Update alpine to 3.21.3. Added riscv64 support.
  | **31.01.2025** | Many minor alpine updates.
