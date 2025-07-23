@@ -30,7 +30,7 @@ Serviio serve DLNA over the default port `1900` with `UDP`, the media itself wil
 ## Container Settings
 ### Build Args
 
- - `ALPINE_VERSION` = 3.22.0
+ - `ALPINE_VERSION` = 3.22.1
  - `SERVIIO_VERSION` = 2.4
  - `JRE_PACKAGE` = openjdk8-jre (32bit) / openjdk22-jre (64bit)
 
@@ -60,6 +60,7 @@ Serviio serve DLNA over the default port `1900` with `UDP`, the media itself wil
 ## Container Changelog (dd.mm.yy)
  | Date | Changes |
  | ---- | ------- |
+ | **23.07.2025** | Update alpine to 3.22.1
  | **02.07.2025** | Many minor alpine updates.
  | **01.07.2025** | v2.2.1 Images from DockerHub are being deleted. There are outdated or unused.
  | **05.06.2025** | Update alpine to 3.22.0
