@@ -2,14 +2,16 @@
 #
 # Run with: docker run --rm --name serviio -d -p 23423:23423/tcp -p 23424:23424/tcp -p 8895:8895/tcp -p 1900:1900/udp -v /etc/localtime:/etc/localtime:ro soerentsch/serviio
 ARG ALPINE_VERSION=3.23.2
+ARG TARGETPLATFORM
 
-FROM alpine:${ALPINE_VERSION}
+FROM --platform=$TARGETPLATFORM alpine:${ALPINE_VERSION}
 
 ARG BUILD_DATE
 ARG BUILD_VCS_REF
 
 ARG SERVIIO_VERSION=2.4
-ARG JRE_PACKAGE=openjdk8-jre
+ARG JRE_PACKAGE_32=openjdk8-jre
+ARG JRE_PACKAGE_64=openjdk25-jre
 
 LABEL \
 	org.label-schema.build-date="${BUILD_DATE}" \
@@ -21,9 +23,7 @@ LABEL \
 	org.label-schema.vcs-url="https://github.dev/soerentsch/docker-serviio/" \
 	org.label-schema.vendor="[soerentsch] Soeren <soerentsch@gmail.com>" \
 	org.label-schema.version="${SERVIIO_VERSION}" \
-	maintainer="[soerentsch] Soeren <soerentsch@gmail.com>"
-
-LABEL \
+	maintainer="[soerentsch] Soeren <soerentsch@gmail.com>" \
 	org.opencontainers.image.created="${BUILD_DATE}" \
 	org.opencontainers.image.description="DLNA Serviio Container" \
 	org.opencontainers.image.title="DLNA Serviio Container" \
@@ -38,7 +38,11 @@ ENV JAVA_HOME="/usr"
 ENV JAVA_OPTS="-XX:+UsePerfData"
 
 # Prepare APK CDNs
-RUN set -ex \
+RUN if [ "$TARGETPLATFORM" = "linux/386" ] || [ "$TARGETPLATFORM" = "linux/arm/7" ]; then \
+      JRE_PACKAGE=${JRE_PACKAGE_32}; \
+    else \
+      JRE_PACKAGE=${JRE_PACKAGE_64}; \
+    fi \
 	&& echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
 	&& echo "https://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
 	&& echo "https://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
@@ -51,6 +55,8 @@ RUN set -ex \
 		g++ \ 
 		jasper-dev \
 		lcms2-dev \ 
+
+RUN set -ex \
 ### Create WORKDIR and get all ingredients		
 	&& DIR=$(mktemp -d) && cd ${DIR} \
 	&& wget https://raw.githubusercontent.com/soerentsch/dcraw/master/dcraw.c \
