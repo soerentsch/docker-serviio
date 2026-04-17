@@ -1,7 +1,7 @@
 # Serviio docker
 #
 # Run with: docker run --rm --name serviio -d -p 23423:23423/tcp -p 23424:23424/tcp -p 8895:8895/tcp -p 1900:1900/udp -v /etc/localtime:/etc/localtime:ro soerentsch/serviio
-ARG ALPINE_VERSION=3.23.2
+ARG ALPINE_VERSION=3.23.4
 ARG TARGETPLATFORM
 
 FROM --platform=$TARGETPLATFORM alpine:${ALPINE_VERSION}
@@ -10,8 +10,7 @@ ARG BUILD_DATE
 ARG BUILD_VCS_REF
 
 ARG SERVIIO_VERSION=2.4
-ARG JRE_PACKAGE_32=openjdk8-jre
-ARG JRE_PACKAGE_64=openjdk25-jre
+ARG JRE_PACKAGE=openjdk-jre
 
 LABEL \
 	org.label-schema.build-date="${BUILD_DATE}" \
@@ -38,11 +37,7 @@ ENV JAVA_HOME="/usr"
 ENV JAVA_OPTS="-XX:+UsePerfData"
 
 # Prepare APK CDNs
-RUN if [ "$TARGETPLATFORM" = "linux/386" ] || [ "$TARGETPLATFORM" = "linux/arm/7" ]; then \
-      JRE_PACKAGE=${JRE_PACKAGE_32}; \
-    else \
-      JRE_PACKAGE=${JRE_PACKAGE_64}; \
-    fi \
+RUN set -ex \
 	&& echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
 	&& echo "https://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
 	&& echo "https://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
@@ -54,9 +49,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/386" ] || [ "$TARGETPLATFORM" = "linux/arm/7
 	&& apk add --no-cache --update --virtual=.build-dependencies \
 		g++ \ 
 		jasper-dev \
-		lcms2-dev \ 
-
-RUN set -ex \
+		lcms2-dev \
 ### Create WORKDIR and get all ingredients		
 	&& DIR=$(mktemp -d) && cd ${DIR} \
 	&& wget https://raw.githubusercontent.com/soerentsch/dcraw/master/dcraw.c \
